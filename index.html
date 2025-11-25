@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test2</title>
+  <meta name="company-description" content="Test">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f0ff, #f5f9ff);
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding-top: 30px;
+    }
+
+    .chat-box {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 30px;
+      border-top: 4px solid #1e90ff;
+    }
+
+    img.logo {
+      width: 150px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #0056b3;
+      margin: 10px 0 5px 0;
+      font-size: 32px;
+    }
+
+    h2 {
+      color: #4a4a4a;
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    input, button {
+      width: 80%;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #b0c9ff;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1e90ff;
+      box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+    }
+
+    button {
+      background-color: #1e90ff;
+      color: white;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    pre {
+      margin-top: 20px;
+      text-align: left;
+      background-color: #eef4ff;
+      padding: 15px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      min-height: 50px;
+      border: 1px solid #d0defc;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Chat met Digitale Assistent (enige zichtbare use case) -->
+  <div class="chat-box">
+    <img class="logo" src="ahv-logo.jpg" alt="Test2 logo" />
+    <h1>Test2</h1>
+    <h2>Test2 – stel je vraag aan onze digitale assistent</h2>
+
+    <input id="userInput" placeholder="Typ hier je vraag..." />
+    <br />
+    <button onclick="sendToGPT()">Verstuur</button>
+    <pre id="response">Antwoord verschijnt hier...</pre>
+  </div>
+
+  <script>
+    const companyName = "Test2";
+    const companyDescription = document.querySelector('meta[name="company-description"]').content;
+
+    // Chat functie
+    async function sendToGPT() {
+      const input = document.getElementById("userInput").value;
+      const responseEl = document.getElementById("response");
+      responseEl.innerText = "Even nadenken...";
+
+      try {
+        const res = await fetch("https://hook.eu2.make.com/kp9mo3585t2jdi1y9q22tinlr7dkca9a", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            company_name: companyName,
+            company_description: companyDescription,
+            message: input
+          })
+        });
+
+        const reply = await res.text();
+        responseEl.innerText = reply || "Geen antwoord ontvangen.";
+      } catch (err) {
+        responseEl.innerText = "Fout: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
